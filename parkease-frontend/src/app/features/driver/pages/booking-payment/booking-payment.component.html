@@ -1,0 +1,28 @@
+<div class="payment-page">
+  <h2 class="page-title">Complete Payment</h2>
+
+  <div *ngIf="loading()" class="state-message">Loading booking details…</div>
+  <div *ngIf="error() && !paid()" class="error-message">{{ error() }}</div>
+
+  <ng-container *ngIf="paid(); else checkoutBlock">
+    <div class="success-card">
+      <div class="success-icon">&#10004;</div>
+      <h3>Payment Successful!</h3>
+      <p>Transaction ID: <strong>{{ paidPayment()?.razorpayPaymentId }}</strong></p>
+      <p>Amount Paid: <strong>&#8377;{{ paidPayment()?.amount | number:'1.2-2' }}</strong></p>
+      <button class="btn-primary" (click)="goToBookings()">View My Bookings</button>
+    </div>
+  </ng-container>
+
+  <ng-template #checkoutBlock>
+    <app-razorpay-checkout
+      *ngIf="!loading() && bookingId() !== null"
+      [bookingId]="bookingId()!"
+      [amount]="amount()"
+      [description]="'Parking booking #' + bookingId()"
+      (paymentSuccess)="onPaymentSuccess($event)"
+      (paymentError)="onPaymentError($event)"
+      (paymentDismissed)="onDismissed()">
+    </app-razorpay-checkout>
+  </ng-template>
+</div>

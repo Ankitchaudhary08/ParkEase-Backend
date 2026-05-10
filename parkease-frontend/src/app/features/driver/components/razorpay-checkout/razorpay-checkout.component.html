@@ -1,0 +1,34 @@
+<div class="checkout-container">
+  <div class="amount-display">
+    <span class="label">Amount Due</span>
+    <span class="amount">&#8377;{{ amount | number:'1.2-2' }}</span>
+  </div>
+
+  <div *ngIf="errorMessage()" class="error-banner" role="alert">
+    <span class="error-icon">&#9888;</span>
+    {{ errorMessage() }}
+  </div>
+
+  <button
+    class="pay-btn"
+    [disabled]="loading()"
+    (click)="pay()">
+    <span *ngIf="!loading()">
+      Pay &#8377;{{ amount | number:'1.2-2' }} via UPI / Card
+    </span>
+    <span *ngIf="loading()" class="spinner-wrap">
+      <span class="spinner"></span>
+      Processing...
+    </span>
+  </button>
+
+  <p class="secure-note">
+    <span class="lock-icon">&#128274;</span>
+    Secured by Razorpay &mdash; UPI, Debit/Credit cards accepted
+  </p>
+
+  <p class="test-note">
+    Test UPI: <strong>success&#64;razorpay</strong> &nbsp;|&nbsp;
+    Test Card: <strong>4111 1111 1111 1111</strong> &nbsp;|&nbsp; Exp: any future date &nbsp;|&nbsp; CVV: any 3 digits
+  </p>
+</div>
